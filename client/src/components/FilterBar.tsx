@@ -31,7 +31,6 @@ export const FilterBar: React.FC<FilterBarProps> = ({
 
   return (
     <div className="flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:flex-row sm:items-center sm:justify-between dark:border-slate-800 dark:bg-slate-900">
-      {/* Search Input */}
       <div className="relative flex-1">
         <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
           <Search className="h-4 w-4" />
@@ -54,7 +53,6 @@ export const FilterBar: React.FC<FilterBarProps> = ({
         )}
       </div>
 
-      {/* Status Filter Tabs */}
       <div className="flex flex-wrap items-center gap-1 rounded-xl bg-slate-100 p-1 dark:bg-slate-800">
         {statusOptions.map((opt) => {
           const isActive = status === opt.value;
@@ -75,7 +73,6 @@ export const FilterBar: React.FC<FilterBarProps> = ({
         })}
       </div>
 
-      {/* Page Size & Refresh Button */}
       <div className="flex items-center gap-2">
         <select
           value={limit}

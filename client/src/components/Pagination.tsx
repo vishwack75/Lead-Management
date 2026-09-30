@@ -21,7 +21,6 @@ export const Pagination: React.FC<PaginationProps> = ({
   const startIdx = (page - 1) * limit + 1;
   const endIdx = Math.min(page * limit, total);
 
-  // Generate page numbers to display
   const pages: number[] = [];
   const maxPagesToShow = 5;
   let startPage = Math.max(1, page - 2);

@@ -34,9 +34,6 @@ export interface LeadStatsResponse {
 }
 
 export class LeadService {
-  /**
-   * Create a new lead in MongoDB
-   */
   async createLead(data: CreateLeadDTO): Promise<ILead> {
     const lead = await Lead.create({
       name: data.name.trim(),
@@ -48,20 +45,15 @@ export class LeadService {
     return lead;
   }
 
-  /**
-   * Retrieve leads with optional search, status filter, and pagination
-   */
   async getLeads(params: GetLeadsServiceParams): Promise<PaginatedLeadsResponse> {
     const { search, status, page = 1, limit = 10 } = params;
 
     const filter: Record<string, any> = {};
 
-    // Filter by status if provided and not 'All'
     if (status && status !== 'All' && LEAD_STATUSES.includes(status as LeadStatus)) {
       filter.status = status;
     }
 
-    // Search by name, email, or phone
     if (search && search.trim() !== '') {
       const sanitized = search.trim();
       const searchRegex = new RegExp(sanitized, 'i');
@@ -94,9 +86,6 @@ export class LeadService {
     };
   }
 
-  /**
-   * Update lead status by ID
-   */
   async updateLeadStatus(id: string, status: LeadStatus): Promise<ILead> {
     if (!mongoose.Types.ObjectId.isValid(id)) {
       throw new AppError('Invalid Lead ID format', 400);
@@ -109,7 +98,7 @@ export class LeadService {
     const updatedLead = await Lead.findByIdAndUpdate(
       id,
       { status },
-      { new: true, runValidators: true }
+      { returnDocument: 'after', runValidators: true }
     );
 
     if (!updatedLead) {
@@ -119,9 +108,6 @@ export class LeadService {
     return updatedLead;
   }
 
-  /**
-   * Delete lead by ID
-   */
   async deleteLead(id: string): Promise<ILead> {
     if (!mongoose.Types.ObjectId.isValid(id)) {
       throw new AppError('Invalid Lead ID format', 400);
@@ -136,9 +122,6 @@ export class LeadService {
     return deletedLead;
   }
 
-  /**
-   * Get aggregate count statistics for leads
-   */
   async getLeadStats(): Promise<LeadStatsResponse> {
     const [total, newCount, contactedCount, convertedCount] = await Promise.all([
       Lead.countDocuments(),

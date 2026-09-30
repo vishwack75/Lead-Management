@@ -1,11 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
-import { leadService } from '../services/lead.service.js';
+import { leadService } from '../services/lead.service';
 import { LeadStatus } from '../model/lead.model.js';
 import { CreateLeadDTO, UpdateLeadStatusDTO } from '../validation/lead.validation.js';
 
-// @desc    Create a new lead
-// @route   POST /api/leads
-// @access  Public
 export const createLead = async (
   req: Request<{}, {}, CreateLeadDTO>,
   res: Response,
@@ -24,9 +21,6 @@ export const createLead = async (
   }
 };
 
-// @desc    Get all leads (supports search, status filter, and pagination)
-// @route   GET /api/leads
-// @access  Public
 export const getLeads = async (
   req: Request,
   res: Response,
@@ -55,9 +49,6 @@ export const getLeads = async (
   }
 };
 
-// @desc    Update lead status
-// @route   PATCH /api/leads/:id/status
-// @access  Public
 export const updateLeadStatus = async (
   req: Request<{ id: string }, {}, UpdateLeadStatusDTO>,
   res: Response,
@@ -79,9 +70,6 @@ export const updateLeadStatus = async (
   }
 };
 
-// @desc    Delete a lead
-// @route   DELETE /api/leads/:id
-// @access  Public
 export const deleteLead = async (
   req: Request<{ id: string }>,
   res: Response,
@@ -101,9 +89,6 @@ export const deleteLead = async (
   }
 };
 
-// @desc    Get lead statistics for dashboard
-// @route   GET /api/leads/stats
-// @access  Public
 export const getLeadStats = async (
   _req: Request,
   res: Response,

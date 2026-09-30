@@ -1,5 +1,5 @@
 import React from 'react';
-import { Users, Plus, ShieldCheck } from 'lucide-react';
+import { Users, Plus } from 'lucide-react';
 
 interface NavbarProps {
   onOpenAddModal: () => void;
@@ -14,14 +14,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAddModal }) => {
             <Users className="h-5 w-5" />
           </div>
           <div>
-            <div className="flex items-center gap-2">
-              <h1 className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">
-                Lead Management
-              </h1>
-              <span className="hidden items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-medium text-emerald-700 ring-1 ring-inset ring-emerald-600/20 dark:bg-emerald-950/40 dark:text-emerald-400 sm:inline-flex">
-                <ShieldCheck className="h-3 w-3" /> RTK + Zod
-              </span>
-            </div>
+            <h1 className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">
+              Lead Management
+            </h1>
             <p className="text-xs text-slate-500 dark:text-slate-400">
               Manage, track and convert potential customers
             </p>

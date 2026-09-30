@@ -18,29 +18,25 @@ import {
 import type { ILead, LeadStatus } from '../types/lead';
 
 export const LeadManagementPage = () => {
-  // Filter and pagination states
   const [search, setSearch] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [status, setStatus] = useState('All');
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
 
-  // Modals & UI states
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [leadToDelete, setLeadToDelete] = useState<ILead | null>(null);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
 
-  // Debounce search input for instant, smooth filtering
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearch(search);
-      setPage(1); // Reset to page 1 on search change
+      setPage(1);
     }, 300);
     return () => clearTimeout(timer);
   }, [search]);
 
-  // RTK Query endpoints
   const {
     data: leadsData,
     isLoading: isLeadsLoading,
@@ -62,7 +58,6 @@ export const LeadManagementPage = () => {
   const [updateLeadStatus] = useUpdateLeadStatusMutation();
   const [deleteLead, { isLoading: isDeleting }] = useDeleteLeadMutation();
 
-  // Toast Helpers
   const addToast = (type: 'success' | 'error' | 'info', message: string) => {
     const id = Date.now().toString();
     setToasts((prev) => [...prev, { id, type, message }]);
@@ -72,7 +67,6 @@ export const LeadManagementPage = () => {
     setToasts((prev) => prev.filter((t) => t.id !== id));
   };
 
-  // Status update handler (PATCH /api/leads/:id/status)
   const handleUpdateStatus = async (id: string, newStatus: LeadStatus) => {
     setUpdatingId(id);
     try {
@@ -88,7 +82,6 @@ export const LeadManagementPage = () => {
     }
   };
 
-  // Delete lead handler (DELETE /api/leads/:id)
   const handleConfirmDelete = async () => {
     if (!leadToDelete) return;
     try {
@@ -113,13 +106,10 @@ export const LeadManagementPage = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100">
-      {/* Top Navigation */}
       <Navbar onOpenAddModal={() => setIsAddModalOpen(true)} />
 
-      {/* Main Content Area */}
       <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <div className="space-y-6">
-          {/* Overview Metrics Cards */}
           <StatsCards
             stats={statsData?.data}
             isLoading={isStatsLoading}
@@ -127,13 +117,11 @@ export const LeadManagementPage = () => {
             onSelectStatus={handleStatusFilterChange}
           />
 
-          {/* Quick Inline Lead Creation Form (Matches Prompt Requirement) */}
           <AddLeadForm
             onSuccess={(msg) => addToast('success', msg)}
             onError={(msg) => addToast('error', msg)}
           />
 
-          {/* Search, Filter, and Controls Bar */}
           <FilterBar
             search={search}
             onSearchChange={setSearch}
@@ -148,7 +136,6 @@ export const LeadManagementPage = () => {
             isFetching={isLeadsFetching}
           />
 
-          {/* Leads Table & Pagination */}
           <div className="flex flex-col">
             <LeadTable
               leads={leadsData?.data || []}
@@ -169,7 +156,6 @@ export const LeadManagementPage = () => {
         </div>
       </main>
 
-      {/* Add Lead Popup Modal */}
       <AddLeadModal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
@@ -177,7 +163,6 @@ export const LeadManagementPage = () => {
         onError={(msg) => addToast('error', msg)}
       />
 
-      {/* Delete Confirmation Modal */}
       <DeleteModal
         isOpen={Boolean(leadToDelete)}
         lead={leadToDelete}
@@ -186,7 +171,6 @@ export const LeadManagementPage = () => {
         onCancel={() => setLeadToDelete(null)}
       />
 
-      {/* Toast Notification Container */}
       <Toast toasts={toasts} onDismiss={removeToast} />
     </div>
   );

@@ -97,13 +97,11 @@ export const AddLeadModal: React.FC<AddLeadModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* Backdrop */}
       <div
         className="fixed inset-0 bg-slate-900/50 backdrop-blur-xs transition-opacity"
         onClick={onClose}
       />
 
-      {/* Modal Dialog */}
       <div className="relative w-full max-w-lg transform rounded-2xl bg-white p-6 shadow-2xl transition-all dark:bg-slate-900">
         <div className="flex items-center justify-between border-b border-slate-100 pb-4 dark:border-slate-800">
           <div>
@@ -111,7 +109,7 @@ export const AddLeadModal: React.FC<AddLeadModalProps> = ({
               Create New Lead
             </h3>
             <p className="text-xs text-slate-500">
-              Fill in the details below. Real-time Zod validated.
+              Fill in the details below to register a new lead
             </p>
           </div>
           <button
@@ -131,7 +129,6 @@ export const AddLeadModal: React.FC<AddLeadModalProps> = ({
         )}
 
         <form onSubmit={handleSubmit} className="mt-4 space-y-4" noValidate>
-          {/* Name */}
           <div>
             <label
               htmlFor="modal-name"
@@ -163,7 +160,6 @@ export const AddLeadModal: React.FC<AddLeadModalProps> = ({
             )}
           </div>
 
-          {/* Email */}
           <div>
             <label
               htmlFor="modal-email"
@@ -195,7 +191,6 @@ export const AddLeadModal: React.FC<AddLeadModalProps> = ({
             )}
           </div>
 
-          {/* Phone */}
           <div>
             <label
               htmlFor="modal-phone"
@@ -227,7 +222,6 @@ export const AddLeadModal: React.FC<AddLeadModalProps> = ({
             )}
           </div>
 
-          {/* Status */}
           <div>
             <label
               htmlFor="modal-status"
@@ -248,7 +242,6 @@ export const AddLeadModal: React.FC<AddLeadModalProps> = ({
             </select>
           </div>
 
-          {/* Form Actions */}
           <div className="mt-6 flex items-center justify-end gap-3 pt-3 border-t border-slate-100 dark:border-slate-800">
             <button
               type="button"

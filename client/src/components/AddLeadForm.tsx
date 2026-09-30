@@ -23,7 +23,6 @@ export const AddLeadForm: React.FC<AddLeadFormProps> = ({ onSuccess, onError }) 
 
   const [createLead, { isLoading }] = useCreateLeadMutation();
 
-  // Validate a single field on blur or change
   const validateField = (field: keyof LeadFormData, value: string) => {
     const updated = { ...formData, [field]: value };
     const result = leadFormSchema.safeParse(updated);
@@ -57,7 +56,6 @@ export const AddLeadForm: React.FC<AddLeadFormProps> = ({ onSuccess, onError }) 
     e.preventDefault();
     setServerError(null);
 
-    // Run client-side Zod validation
     const validationResult = leadFormSchema.safeParse(formData);
 
     if (!validationResult.success) {
@@ -75,7 +73,6 @@ export const AddLeadForm: React.FC<AddLeadFormProps> = ({ onSuccess, onError }) 
 
     try {
       const response = await createLead(validationResult.data).unwrap();
-      // Reset form
       setFormData({ name: '', email: '', phone: '', status: 'New' });
       setErrors({});
       setTouched({});
@@ -100,7 +97,7 @@ export const AddLeadForm: React.FC<AddLeadFormProps> = ({ onSuccess, onError }) 
             Quick Add Lead
           </h2>
           <p className="text-xs text-slate-500">
-            Validated via Zod schema on both client and server
+            Fill in the lead details to add them
           </p>
         </div>
       </div>
@@ -114,7 +111,6 @@ export const AddLeadForm: React.FC<AddLeadFormProps> = ({ onSuccess, onError }) 
 
       <form onSubmit={handleSubmit} noValidate>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {/* Name Field */}
           <div>
             <label
               htmlFor="name"
@@ -148,7 +144,6 @@ export const AddLeadForm: React.FC<AddLeadFormProps> = ({ onSuccess, onError }) 
             )}
           </div>
 
-          {/* Email Field */}
           <div>
             <label
               htmlFor="email"
@@ -182,7 +177,6 @@ export const AddLeadForm: React.FC<AddLeadFormProps> = ({ onSuccess, onError }) 
             )}
           </div>
 
-          {/* Phone Field */}
           <div>
             <label
               htmlFor="phone"
@@ -216,7 +210,6 @@ export const AddLeadForm: React.FC<AddLeadFormProps> = ({ onSuccess, onError }) 
             )}
           </div>
 
-          {/* Initial Status & Submit Button */}
           <div className="flex items-end gap-2">
             <div className="w-1/2">
               <label

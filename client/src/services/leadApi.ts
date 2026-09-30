@@ -16,7 +16,6 @@ export const leadApi = createApi({
   }),
   tagTypes: ['Lead', 'Stats'],
   endpoints: (builder) => ({
-    // Fetch paginated leads with search and filter
     getLeads: builder.query<GetLeadsResponse, GetLeadsParams>({
       query: (params) => ({
         url: '/leads',
@@ -36,13 +35,11 @@ export const leadApi = createApi({
           : [{ type: 'Lead', id: 'LIST' }],
     }),
 
-    // Fetch lead summary stats
     getLeadStats: builder.query<ApiResponse<LeadStats>, void>({
       query: () => '/leads/stats',
       providesTags: [{ type: 'Stats', id: 'OVERVIEW' }],
     }),
 
-    // Create a new lead
     createLead: builder.mutation<ApiResponse<ILead>, CreateLeadInput>({
       query: (leadData) => ({
         url: '/leads',
@@ -55,7 +52,6 @@ export const leadApi = createApi({
       ],
     }),
 
-    // Update lead status
     updateLeadStatus: builder.mutation<
       ApiResponse<ILead>,
       { id: string; status: LeadStatus }
@@ -72,7 +68,6 @@ export const leadApi = createApi({
       ],
     }),
 
-    // Delete a lead
     deleteLead: builder.mutation<ApiResponse<ILead>, string>({
       query: (id) => ({
         url: `/leads/${id}`,

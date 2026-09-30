@@ -17,7 +17,6 @@ export const LeadTable: React.FC<LeadTableProps> = ({
   onDeleteClick,
   updatingId,
 }) => {
-  // Status style helper
   const getStatusBadge = (status: LeadStatus) => {
     switch (status) {
       case 'New':
@@ -31,7 +30,6 @@ export const LeadTable: React.FC<LeadTableProps> = ({
     }
   };
 
-  // Get next logical status for quick action button
   const getNextStatusAction = (status: LeadStatus): LeadStatus | null => {
     if (status === 'New') return 'Contacted';
     if (status === 'Contacted') return 'Converted';
@@ -51,7 +49,6 @@ export const LeadTable: React.FC<LeadTableProps> = ({
     }
   };
 
-  // Skeleton Loading Rows
   if (isLoading) {
     return (
       <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
@@ -79,7 +76,6 @@ export const LeadTable: React.FC<LeadTableProps> = ({
     );
   }
 
-  // Empty State
   if (leads.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-white p-12 text-center dark:border-slate-800 dark:bg-slate-900">
@@ -98,7 +94,6 @@ export const LeadTable: React.FC<LeadTableProps> = ({
 
   return (
     <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
-      {/* Desktop Table View */}
       <div className="hidden overflow-x-auto md:block">
         <table className="w-full text-left text-sm text-slate-600 dark:text-slate-400">
           <thead className="border-b border-slate-200 bg-slate-50/75 text-xs font-semibold uppercase tracking-wider text-slate-700 dark:border-slate-800 dark:bg-slate-800/50 dark:text-slate-300">
@@ -133,7 +128,6 @@ export const LeadTable: React.FC<LeadTableProps> = ({
                   key={lead._id}
                   className="transition-colors hover:bg-slate-50/75 dark:hover:bg-slate-800/40"
                 >
-                  {/* Lead Name */}
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center gap-3">
                       <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-indigo-500 to-violet-500 text-xs font-bold text-white shadow-xs">
@@ -145,7 +139,6 @@ export const LeadTable: React.FC<LeadTableProps> = ({
                     </div>
                   </td>
 
-                  {/* Email */}
                   <td className="px-6 py-4 whitespace-nowrap">
                     <a
                       href={`mailto:${lead.email}`}
@@ -156,7 +149,6 @@ export const LeadTable: React.FC<LeadTableProps> = ({
                     </a>
                   </td>
 
-                  {/* Phone */}
                   <td className="px-6 py-4 whitespace-nowrap">
                     <a
                       href={`tel:${lead.phone}`}
@@ -167,7 +159,6 @@ export const LeadTable: React.FC<LeadTableProps> = ({
                     </a>
                   </td>
 
-                  {/* Status Dropdown/Badge */}
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center gap-2">
                       <select
@@ -188,7 +179,6 @@ export const LeadTable: React.FC<LeadTableProps> = ({
                     </div>
                   </td>
 
-                  {/* Created Date */}
                   <td className="px-6 py-4 whitespace-nowrap text-xs text-slate-500">
                     <div className="flex items-center gap-1">
                       <Calendar className="h-3.5 w-3.5 text-slate-400" />
@@ -196,10 +186,8 @@ export const LeadTable: React.FC<LeadTableProps> = ({
                     </div>
                   </td>
 
-                  {/* Actions */}
                   <td className="px-6 py-4 whitespace-nowrap text-right">
                     <div className="flex items-center justify-end gap-2">
-                      {/* One-click advance button matching requirements: [Contacted] or [Converted] */}
                       {nextStatus && (
                         <button
                           type="button"
@@ -212,7 +200,6 @@ export const LeadTable: React.FC<LeadTableProps> = ({
                         </button>
                       )}
 
-                      {/* Delete Button */}
                       <button
                         type="button"
                         onClick={() => onDeleteClick(lead)}
@@ -230,7 +217,6 @@ export const LeadTable: React.FC<LeadTableProps> = ({
         </table>
       </div>
 
-      {/* Mobile Card View */}
       <div className="divide-y divide-slate-100 md:hidden dark:divide-slate-800">
         {leads.map((lead) => {
           const nextStatus = getNextStatusAction(lead.status);

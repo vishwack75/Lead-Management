@@ -2,42 +2,39 @@ import { z } from 'zod';
 import { Request, Response, NextFunction } from 'express';
 import mongoose from 'mongoose';
 
-// Lead Status Enum
 export const LeadStatusEnum = z.enum(['New', 'Contacted', 'Converted'], {
-  errorMap: () => ({ message: "Status must be either 'New', 'Contacted', or 'Converted'" }),
+  message: "Status must be either 'New', 'Contacted', or 'Converted'",
 });
 
-// Zod Schema for Creating a Lead
 export const createLeadSchema = z.object({
   body: z.object({
     name: z
-      .string({ required_error: 'Name is required' })
+      .string({ message: 'Name is required' })
       .trim()
       .min(2, 'Name must be at least 2 characters long')
       .max(80, 'Name cannot exceed 80 characters'),
     email: z
-      .string({ required_error: 'Email is required' })
+      .string({ message: 'Email is required' })
       .trim()
       .toLowerCase()
-      .email('Please provide a valid email address (e.g. rahul@gmail.com)'),
+      .email('Please provide a valid email address'),
     phone: z
-      .string({ required_error: 'Phone number is required' })
+      .string({ message: 'Phone number is required' })
       .trim()
-      .min(7, 'Phone number must be at least 7 digits')
-      .max(15, 'Phone number cannot exceed 15 digits')
+      .min(6, 'Phone number must be at least 6 digits')
+      .max(10, 'Phone number cannot exceed 10 digits')
       .regex(
         /^\+?[0-9\s\-()]{7,15}$/,
-        'Please enter a valid phone number (digits, optional +, hyphens, or parentheses)'
+        'Please enter a valid phone number'
       ),
     status: LeadStatusEnum.optional().default('New'),
   }),
 });
 
-// Zod Schema for Updating Lead Status
 export const updateLeadStatusSchema = z.object({
   params: z.object({
     id: z
-      .string({ required_error: 'Lead ID is required' })
+      .string({ message: 'Lead ID is required' })
       .refine((val) => mongoose.Types.ObjectId.isValid(val), {
         message: 'Invalid Lead ID format',
       }),
@@ -47,18 +44,16 @@ export const updateLeadStatusSchema = z.object({
   }),
 });
 
-// Zod Schema for Lead ID param (for delete and get by id)
 export const leadIdParamSchema = z.object({
   params: z.object({
     id: z
-      .string({ required_error: 'Lead ID is required' })
+      .string({ message: 'Lead ID is required' })
       .refine((val) => mongoose.Types.ObjectId.isValid(val), {
         message: 'Invalid Lead ID format',
       }),
   }),
 });
 
-// Zod Schema for Lead Query parameters (search, filter, pagination)
 export const getLeadsQuerySchema = z.object({
   query: z.object({
     search: z.string().optional(),
@@ -68,8 +63,7 @@ export const getLeadsQuerySchema = z.object({
   }),
 });
 
-// Express validation middleware using Zod schemas
-export const validate = (schema: z.ZodSchema) => {
+export const validate = (schema: z.ZodType<any>) => {
   return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const parsed = await schema.parseAsync({
@@ -78,7 +72,6 @@ export const validate = (schema: z.ZodSchema) => {
         params: req.params,
       });
 
-      // Assign parsed & sanitized data back to req
       if (parsed.body) req.body = parsed.body;
       if (parsed.query) req.query = parsed.query;
       if (parsed.params) req.params = parsed.params;
