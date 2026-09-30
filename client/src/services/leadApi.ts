@@ -9,10 +9,12 @@ import type {
   LeadStatus,
 } from '../types/lead';
 
+const baseUrl = (import.meta.env.VITE_API_URL as string) || '/api';
+
 export const leadApi = createApi({
   reducerPath: 'leadApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: '/api',
+    baseUrl,
   }),
   tagTypes: ['Lead', 'Stats'],
   endpoints: (builder) => ({

@@ -61,7 +61,18 @@ cd Lead-Management
    npm install
    ```
 
-3. Start the frontend development server:
+3. Create the environment file:
+   ```bash
+   cp .env.example .env
+   ```
+   *(On Windows PowerShell, use: `copy .env.example .env`)*
+
+4. Configure `.env` (matches backend port):
+   ```env
+   VITE_API_URL=http://localhost:5000/api
+   ```
+
+5. Start the frontend development server:
    ```bash
    npm run dev
    ```
