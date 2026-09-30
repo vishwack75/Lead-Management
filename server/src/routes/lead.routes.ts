@@ -6,21 +6,37 @@ import {
   deleteLead,
   getLeadStats,
 } from '../controller/lead.controller.js';
+import {
+  validate,
+  createLeadSchema,
+  updateLeadStatusSchema,
+  leadIdParamSchema,
+  getLeadsQuerySchema,
+} from '../validation/lead.validation.js';
 
 const router = Router();
 
-// Statistics route (place before parameterized :id route)
+// Aggregate stats endpoint (must come before parameterized routes)
 router.get('/stats', getLeadStats);
 
-// Base leads routes
-router.route('/')
-  .post(createLead)
-  .get(getLeads);
+// Lead collection routes
+router
+  .route('/')
+  .post(validate(createLeadSchema), createLead)
+  .get(validate(getLeadsQuerySchema), getLeads);
 
-// Single lead status update
-router.patch('/:id/status', updateLeadStatus);
+// Lead item status update route
+router.patch(
+  '/:id/status',
+  validate(updateLeadStatusSchema),
+  updateLeadStatus
+);
 
-// Single lead deletion
-router.delete('/:id', deleteLead);
+// Lead item deletion route
+router.delete(
+  '/:id',
+  validate(leadIdParamSchema),
+  deleteLead
+);
 
 export default router;

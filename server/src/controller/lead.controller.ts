@@ -1,18 +1,18 @@
 import { Request, Response, NextFunction } from 'express';
 import { leadService } from '../services/lead.service.js';
 import { LeadStatus } from '../model/lead.model.js';
+import { CreateLeadDTO, UpdateLeadStatusDTO } from '../validation/lead.validation.js';
 
 // @desc    Create a new lead
 // @route   POST /api/leads
 // @access  Public
 export const createLead = async (
-  req: Request,
+  req: Request<{}, {}, CreateLeadDTO>,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { name, email, phone, status } = req.body;
-    const newLead = await leadService.createLead({ name, email, phone, status });
+    const newLead = await leadService.createLead(req.body);
 
     res.status(201).json({
       success: true,
@@ -38,8 +38,8 @@ export const getLeads = async (
     const result = await leadService.getLeads({
       search: typeof search === 'string' ? search : undefined,
       status: typeof status === 'string' ? status : undefined,
-      page: typeof page === 'string' ? page : undefined,
-      limit: typeof limit === 'string' ? limit : undefined,
+      page: page ? Number(page) : undefined,
+      limit: limit ? Number(limit) : undefined,
     });
 
     res.status(200).json({
@@ -59,7 +59,7 @@ export const getLeads = async (
 // @route   PATCH /api/leads/:id/status
 // @access  Public
 export const updateLeadStatus = async (
-  req: Request,
+  req: Request<{ id: string }, {}, UpdateLeadStatusDTO>,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
@@ -83,7 +83,7 @@ export const updateLeadStatus = async (
 // @route   DELETE /api/leads/:id
 // @access  Public
 export const deleteLead = async (
-  req: Request,
+  req: Request<{ id: string }>,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
@@ -101,7 +101,7 @@ export const deleteLead = async (
   }
 };
 
-// @desc    Get lead statistics
+// @desc    Get lead statistics for dashboard
 // @route   GET /api/leads/stats
 // @access  Public
 export const getLeadStats = async (
